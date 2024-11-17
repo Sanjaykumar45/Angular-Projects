@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>3D Loader Animation</title>
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+    perspective: 800px; /* Adds depth to the 3D effect */
+}
+
+.loader {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d; /* Enable 3D transformations */
+    animation: rotate 2s infinite linear; /* Animation for rotation */
+}
+
+.cube {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #007BFF; /* Front face color */
+    transform: rotateY(0deg) translateZ(50px);
+}
+
+.cube:before, .cube:after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #28A745; /* Side face color */
+}
+
+.cube:before {
+    transform: rotateY(90deg) translateZ(50px); /* Right face */
+}
+
+.cube:after {
+    transform: rotateY(-90deg) translateZ(50px); /* Left face */
+}
+
+.cube::after {
+    background-color: #DC3545; /* Back face color */
+    transform: rotateY(180deg) translateZ(50px); /* Back face */
+}
+
+.cube::before {
+    background-color: #FFC107; /* Bottom face color */
+    transform: rotateX(90deg) translateZ(50px); /* Bottom face */
+}
+
+.cube::before {
+    background-color: #17A2B8; /* Top face color */
+    transform: rotateX(-90deg) translateZ(50px); /* Top face */
+}
+
+@keyframes rotate {
+    from {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+    to {
+        transform: rotateY(360deg) rotateX(360deg);
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="cube"></div>
+    </div>
+</body>
+</html>
