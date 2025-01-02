@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTC Bus Ticket</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Victoria_bus_logo.svg/1200px-Victoria_bus_logo.svg.png" type="image/x-icon">
+    <style>
+        /* style.css */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 500px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 8px 0 5px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .ticket {
+            display: none;
+            width: 192px;
+            height: 192px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: black;
+            font-family: Consolas, "Courier New", monospace;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .header,
+        .mtc-details,
+        .amount-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .header div,
+        .mtc-details div,
+        .amount-details div {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header div.left,
+        .mtc-details div.left {
+            justify-content: flex-start;
+        }
+
+        .header div.right,
+        .mtc-details div.right {
+            justify-content: flex-end;
+        }
+
+        .amount-details .left {
+            font-weight: bold;
+        }
+
+        #totalAmount,
+        #rupees {
+            color: black;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 10px;
+        }
+
+        .header div h6 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .route-details {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            input,
+            button {
+                font-size: 1rem;
+            }
+
+            .ticket {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .amount-details {
+                font-size: 0.8rem;
+            }
+
+            .footer {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .ticket {
+                max-width: 260px;
+            }
+
+            .header div,
+            .mtc-details div,
+            .amount-details div {
+                font-size: 0.7rem;
+            }
+
+            .amount-details {
+                font-size: 0.75rem;
+            }
+
+            .footer {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="box">
+        <h2 id="heading">MTC Bus Ticket</h2>
+
+        <!-- Form to collect ticket details -->
+        <form id="ticketForm">
+            <label for="from">From:</label>
+            <input type="text" id="from" required placeholder="Enter departure city">
+
+            <label for="to">To:</label>
+            <input type="text" id="to" required placeholder="Enter destination city">
+
+            <label for="passengers">No. of Passengers:</label>
+            <input type="text" id="passengers" required placeholder="Enter number of passengers">
+
+            <label for="amount">Amount per Passenger:</label>
+            <input type="text" id="amount" required placeholder="Enter amount per passenger">
+
+            <button type="submit">Print Ticket</button>
+        </form>
+    </div>
+    <!-- Ticket Details -->
+    <div id="ticket" class="ticket">
+        <div class="header" style="font-size: 12px;">
+            <div class="center">
+                <strong>State Transport Corporation</strong>
+            </div>
+        </div>
+        <div class="mtc-details" style="margin-top: 2px;">
+            <div class="left" style="margin-left: -1px;">
+                <span> <span id="ticketNo"></span></span>
+            </div>
+            <div class="center" style="margin-left: 7px;">
+                <span><span id="ticketDate"></span></span>
+            </div>
+            <div class="right" style="margin-right: -1px;">
+                <span><span id="ticketTime"></span></span>
+            </div>
+        </div>
+
+        <div class="mtc-details">
+            <div class="left" style="margin-left: 15px;">
+                <strong>MTC BUS</strong>
+            </div>
+            <div class="right" style="margin-right: 15px;">
+                <span id="busNumber"></span>
+            </div>
+        </div>
+
+        <div class="mtc-details">
+            <div class="center">
+                <span class="route-details" id="routeDetails"></span>
+            </div>
+        </div>
+
+        <div class="amount-details">
+            <div class="left" style="font-size: 11px;">
+                <span><strong>AD:</strong> <span id="passengerAmount"></span></span>
+            </div>
+        </div>
+
+        <div class="amount-details">
+            <div class="center">
+                <span><strong id="rupees">₹<span id="totalAmount"></span>(UPI)</strong></span>
+            </div>
+        </div>
+
+        <div class="amount-details">
+            <div class="center" style="font-size: 11px;">
+                <span>Subject To Motor Vechile Rules</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span> <span id="ticketCount"></span>/<span id="maxCount"></span></span>
+        </div>
+    </div>
+
+    <script>
+        // script.js
+        // script.js
+        let ticketCount = parseInt(localStorage.getItem('ticketCount')) || 0; // Retrieve ticket count from localStorage, default to 0 if not found
+        let maxCount = 1000; // Max count of tickets
+
+        // Initialize ticket count display
+        document.getElementById("ticketCount").textContent = ticketCount;
+        document.getElementById("maxCount").textContent = maxCount;
+
+        document.getElementById("ticketForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Get form values
+            const from = document.getElementById("from").value;
+            const to = document.getElementById("to").value;
+            const passengers = document.getElementById("passengers").value;
+            const amount = document.getElementById("amount").value;
+
+            // Format the amount to two decimal places
+            const formattedAmount = parseFloat(amount).toFixed(2);
+
+            // Calculate total amount
+            const totalAmount = (passengers * formattedAmount).toFixed(2);
+
+            // Generate ticket number (simple random number generator for demo purposes)
+            const ticketNo = "TKT" + Math.floor(Math.random() * 100000);
+
+            // Generate bus number (random number)
+            const random2Digit = String(Math.floor(Math.random() * 90) + 10); // Random 2-digit number
+            const random2Alpha = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Random 2 alphabets
+            const random4Digit = String(Math.floor(Math.random() * 9000) + 1000); // Random 4-digit number
+
+            const busNumber = "TN" + random2Digit + random2Alpha + random4Digit;
+
+            // Get current date and time
+            const currentDate = new Date();
+            const date = currentDate.toLocaleDateString();
+
+            // Format time to show as "10:15PM" (no space between time and AM/PM)
+            const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+            let time = currentDate.toLocaleTimeString([], options);
+            time = time.replace(' ', ''); // Remove the space between time and AM/PM
+
+            // Update ticket details dynamically
+            document.getElementById("ticketNo").textContent = ticketNo;
+            document.getElementById("ticketDate").textContent = date;
+            document.getElementById("ticketTime").textContent = time;
+            document.getElementById("routeDetails").textContent = `${from} - ${to}`;
+            document.getElementById("busNumber").textContent = busNumber;
+
+            // Passenger and Amount calculation
+            const passengerAmount = `${passengers} x ₹${formattedAmount} = ₹${totalAmount}`;
+            document.getElementById("passengerAmount").textContent = passengerAmount;
+            document.getElementById("totalAmount").textContent = totalAmount;
+
+            // Update ticket count and store it in localStorage
+            ticketCount++;
+            localStorage.setItem('ticketCount', ticketCount); // Save ticket count in localStorage
+            document.getElementById("ticketCount").textContent = ticketCount;
+
+            // Hide the form and show the ticket
+            document.getElementById("box").style.display = "none";
+            document.getElementById("heading").style.display = "none";
+            document.getElementById("ticketForm").style.display = "none";
+            document.getElementById("ticket").style.display = "block";
+        });
+
+    </script>
+</body>
+
+</html>
