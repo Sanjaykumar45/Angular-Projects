@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Special</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 80%, 18% 100%, 0% 35%);
+            animation: floatUp 5s linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(1); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .yes { background: red; color: white; }
+        .no { background: gray; color: white; }
+    </style>
+</head>
+<body>
+    <div id="heart-container"></div>
+    <div class="container" id="question-container">
+        <h2 id="question">Hii Cutieeeeee ❤️ Will you be my Girlfriend?</h2>
+        <div class="buttons" id="buttons">
+            <button class="btn yes" onclick="loveAccepted()">Yes</button>
+            <button class="btn no" onclick="askAgain()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.getElementById('heart-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+        
+        let noCount = 0;
+        const questions = [
+            "Oiii Mamooty, Enaku Ok Solluma?",
+            "Cutiiieeeee,No more options Neee Yes ennu Parayanum?"
+        ];
+        
+        function loveAccepted() {
+            document.getElementById('question-container').innerHTML = '<h2>Enaku Theriyum Nee No Solla maten.<br>I ❤️ you Diii Cutieeeee</h2>';
+        }
+        
+        function askAgain() {
+            noCount++;
+            if (noCount >= 2) {
+                document.getElementById('question').innerText = questions[1];
+                document.getElementById('buttons').innerHTML = '<button class="btn yes" onclick="loveAccepted()">Yes</button>';
+            } else {
+                document.getElementById('question').innerText = questions[0];
+            }
+        }
+    </script>
+</body>
+</html>
